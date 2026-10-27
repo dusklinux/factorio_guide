@@ -100,16 +100,27 @@ with tempfile.TemporaryDirectory(prefix='factorio-browser-test-') as scratch, sy
         page.locator('#globalQuery').fill(term);page.locator('#globalSearch button').click()
         page.wait_for_function('route==="search"')
         assert kind in page.locator('#results').inner_text(),term
+    go('search?q=science')
+    before=page.locator('#results article.result').count()
+    page.locator('[data-more]').focus();page.keyboard.press('Enter')
+    assert page.locator('#results article.result').count()>before
+    assert page.locator('#results article.result').nth(before).locator('a').first.evaluate('(el)=>el===document.activeElement')
     # Clicking encoded search links must preserve query and scope.
     go('search?q=Prototype%20explorer')
     page.locator('#results a').filter(has_text='Prototype explorer').first.click()
     page.wait_for_function('route==="controls"')
     assert page.locator('.control-card').count()==1
     assert page.locator('#scopeFilter').input_value()=='Editor / debug'
+    page.evaluate("nav('controls?q=Prototype%20explorer&scope=Editor%20%2F%20debug')")
+    assert page.locator('h1').inner_text()=='Find a shortcut by task and context'
+    assert page.locator('#lookup').input_value()=='Prototype explorer'
+    assert page.locator('#scopeFilter').input_value()=='Editor / debug'
+    assert page.locator('.control-card').count()==1
     for path,term in [('recipes','processing-unit'),('technology','rocket-silo'),('machines','roboport'),('help','No path'),('glossary','catalyst')]:
         go(path);page.locator('#lookup').fill(term)
         assert page.locator('#results').inner_text().strip()
-    go('recipes');before=page.locator('.record').count();page.locator('[data-more]').click();assert page.locator('.record').count()>before
+    go('recipes');before=page.locator('.record').count();page.locator('[data-more]').focus();page.keyboard.press('Enter');assert page.locator('.record').count()>before
+    assert page.locator('.record').nth(before).locator('a').first.evaluate('(el)=>el===document.activeElement')
     # Calculator code against independently known quantities.
     go('calculator')
     known=page.evaluate('''()=>{
@@ -134,6 +145,8 @@ with tempfile.TemporaryDirectory(prefix='factorio-browser-test-') as scratch, sy
     page.locator('#calcProductivity').fill('0')
     go('recipe/satellite');page.get_by_role('link',name='Open production calculator').click()
     page.wait_for_function('route==="calculator"')
+    assert page.locator('#calcRecipe').input_value()=='satellite'
+    page.evaluate("nav('calculator?recipe=satellite')")
     assert page.locator('#calcRecipe').input_value()=='satellite'
     page.locator('#siloProductivity').fill('40');assert '72 normal' in page.locator('#rocketResult').inner_text()
     # All visual interactions and keyboard-operable understanding checks.

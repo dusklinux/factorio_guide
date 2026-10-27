@@ -52,3 +52,7 @@ No automated check proves that every instruction succeeds in the actual game. Th
 ## Remaining depth
 
 The recipe and technology catalogues provide broad numerical coverage. This is still not a complete scripting API encyclopedia, exhaustive achievement strategy guide, placement simulator, raw-resource optimization solver, or proof of every combat/pathfinding edge case. Adding those requires separate verified models and runtime evidence. They are not represented by fabricated precision or an unsupported “PhD complete” label.
+
+## Final follow-up pass
+
+Rechecked every recorded source SHA-256 against a clean checkout of the pinned Wube commit. All declared recipe inputs, outputs, times and productivity flags also matched the original Lua declarations. A navigation edge case was found and fixed: reopening an already active query-bearing link now reparses its URL, preserving the page, query and control scope. Keyboard activation of “Show more” now moves focus to the first newly displayed record. Regression tests cover both cases, including repeated calculator links.

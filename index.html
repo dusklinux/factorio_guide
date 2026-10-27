@@ -72,7 +72,7 @@ function readLocation(){
 }
 function nav(to,search=''){
  const [path,parameters='']=to.split('?');const hash=encodeURI(path)+(search?'?q='+encodeURIComponent(search):(parameters?'?'+parameters:''));
- if(location.hash.slice(1)===hash){setRoute({route:to,query:search},true);return}
+ if(location.hash.slice(1)===hash){setRoute(readLocation(),true);return}
  location.hash=hash;
 }
 function setRoute(state,focus=false){route=state.route;query=state.query;if(state.recipe&&maps.recipe.has(state.recipe)){calc.recipe=state.recipe;calc.product='';calc.productivity=0}if(['Base','Expansion','Editor / debug','All'].includes(state.scope))scope=state.scope;category='All';resultLimit=40;stepIndex=0;if(maps.chapter.has(route)){prefs.lastLesson=route;save('factorio_2_1_24_preferences',prefs);const ch=maps.chapter.get(route);const next=ch.steps.findIndex((_,i)=>!progress[ch.id+':'+i]);stepIndex=next<0?0:next}render();document.body.classList.remove('nav-open');$('lessonsBtn').setAttribute('aria-expanded','false');window.scrollTo(0,0);if(focus)$('content').querySelector('h1')?.focus({preventScroll:true})}
@@ -254,7 +254,7 @@ document.addEventListener('click',event=>{
  if(to&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&event.button===0){event.preventDefault();nav(to.dataset.to);return}
  const el=event.target.closest('button');if(!el)return;
  if(el.dataset.expandDiagram){$('diagramTitle').textContent=human(el.dataset.expandDiagram)+' · conceptual diagram';$('diagramDialogBody').innerHTML=graphic(el.dataset.expandDiagram,false);$('diagramDialog').showModal();return}
- if(el.dataset.more){resultLimit+=40;updateResults();$('announcements').textContent='More results shown.';return}
+ if(el.dataset.more){const previous=resultLimit;resultLimit+=40;updateResults();const records=[...$('results').querySelectorAll('article.record, article.result')];if(records[previous]){const next=records[previous].querySelector('a');next?.focus({preventScroll:true});next?.scrollIntoView({block:'nearest'})}else document.querySelector('[data-more]')?.focus({preventScroll:true});$('announcements').textContent='More results shown.';return}
  if(el.dataset.step){stepIndex+=Number(el.dataset.step);render();document.querySelector(`[data-step="${el.dataset.step}"]`)?.focus({preventScroll:true});return}
  if(el.dataset.diagram){window._diagram=el.dataset.diagram;$('diagramPic').innerHTML=graphic(el.dataset.diagram);document.querySelectorAll('[data-diagram]').forEach(b=>{const current=b.dataset.diagram===el.dataset.diagram;b.classList.toggle('active',current);b.setAttribute('aria-pressed',current)});return}
  if(el.dataset.rail){$('railOutcome').innerHTML=el.dataset.rail==='chain'?'<strong>Chain: WAIT before entering.</strong> Its chosen path cannot exit into the occupied block.':'<strong>Regular: ENTER the empty crossing block.</strong> The train may then wait at the red exit and obstruct the junction.';return}
