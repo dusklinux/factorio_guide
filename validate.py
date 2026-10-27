@@ -34,7 +34,7 @@ def validate(data):
         require(set(t['entities'])<=entity_ids,f'Missing topic entity in {t["id"]}')
         require(set(t['related'])<=topic_ids,f'Missing related topic in {t["id"]}')
     for r in ref['recipes']:
-        require(isinstance(r['energy_required'],(int,float)) and r['energy_required']>0,f'Invalid recipe time {r["name"]}')
+        require(isinstance(r['energy_required'],int | float) and r['energy_required']>0,f'Invalid recipe time {r["name"]}')
         require(r['ingredients'] and r['results'] and r['categories'],f'Incomplete recipe {r["name"]}')
         for ingredient in r['ingredients']:
             require(ingredient.get('amount',0)>0 and ingredient['type'] in ('item','fluid'),f'Invalid ingredient {r["name"]}')
@@ -50,7 +50,7 @@ def validate(data):
         for pre in graph[id]:visit(pre)
         active.remove(id);seen.add(id)
     for t in ref['technologies']:
-        require(isinstance(t['effects'],list) and isinstance(t['prerequisites'],list),f'Invalid technology arrays {t["name"]}')
+        require(isinstance(t['effects'],list | tuple) and isinstance(t['prerequisites'],list | tuple),f'Invalid technology arrays {t["name"]}')
         visit(t['name'])
         for e in t['effects']:
             if e['type']=='unlock-recipe':require(e['recipe'] in recipe_ids,f'Missing unlock {e["recipe"]}')

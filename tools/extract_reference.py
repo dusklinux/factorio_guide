@@ -1,25 +1,29 @@
 """Rebuild factual reference data from Wube's pinned 2.1.24 checkout.
 
-Requires Lua and Python luaparser (development tools only). This evaluates only
+Requires Python 3.15+, Lua and luaparser (development tools only). This evaluates only
 recipe/technology/fluid declarations. Entity/item fields are literal AST reads,
 not a substitute for the game's runtime prototype dump; omissions stay omitted.
 """
 import argparse
-import hashlib
-import json
-import subprocess
+lazy import hashlib
+lazy import json
+lazy import subprocess
+from operator import add, sub, mul, truediv, pow
 from pathlib import Path
-from luaparser import ast, astnodes as n
+lazy from luaparser import ast, astnodes as n
 
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('checkout', type=Path)
 args = parser.parse_args()
+# Resolve required parser support after help handling, before extraction starts.
+UNKNOWN=sentinel('UNKNOWN')
+BINARY_OPERATORS=frozendict({n.AddOp:add,n.SubOp:sub,n.MultOp:mul,n.FloatDivOp:truediv,n.ExpoOp:pow})
 checkout = args.checkout.resolve()
-commit = subprocess.check_output(['git','-C',str(checkout),'rev-parse','HEAD'],text=True).strip()
+commit = subprocess.check_output(['git','-C',str(checkout),'rev-parse','HEAD'],encoding='utf-8').strip()
 if commit != 'acf5a342afcb66c066b9d88d202e8622112da117':
     raise SystemExit('Expected Wube factorio-data tag 2.1.24, commit acf5a342afcb66c066b9d88d202e8622112da117')
-raw = json.loads(subprocess.check_output(['lua',str(ROOT/'tools/extract_prototypes.lua'),str(checkout)],text=True))
+raw = json.loads(subprocess.check_output(['lua',str(ROOT/'tools/extract_prototypes.lua'),str(checkout)],encoding='utf-8'))
 recipe_fields = ('name','ingredients','results','energy_required','categories','category','allow_productivity','maximum_productivity','enabled','hidden','hide_from_player_crafting','main_product','subgroup','allow_decomposition')
 recipes = []
 for r in raw['recipe'].values():
@@ -53,7 +57,6 @@ for t in raw['technology'].values():
             x['effects'].extend([{'type':'unlock-recipe','recipe':prefix+f['name']+'-barrel'} for prefix in ('','empty-')])
     techs.append(x)
 
-UNKNOWN=object()
 def literal(node):
     if isinstance(node,n.String): return node.s.decode() if isinstance(node.s,bytes) else node.s
     if isinstance(node,n.Number): return node.n
@@ -61,7 +64,7 @@ def literal(node):
     if isinstance(node,n.FalseExpr): return False
     if isinstance(node,n.Nil): return None
     if isinstance(node,n.UMinusOp):
-        x=literal(node.operand); return -x if isinstance(x,(int,float)) else UNKNOWN
+        x=literal(node.operand); return -x if isinstance(x,int | float) else UNKNOWN
     if isinstance(node,n.Table):
         result={};array=[]
         for field in node.fields:
@@ -72,10 +75,10 @@ def literal(node):
                 key=field.key.id if isinstance(field.key,n.Name) else literal(field.key)
                 if key is not UNKNOWN: result[key]=value
         return result if result else array
-    if isinstance(node,(n.AddOp,n.SubOp,n.MultOp,n.FloatDivOp,n.ExpoOp)):
+    if isinstance(node,n.AddOp | n.SubOp | n.MultOp | n.FloatDivOp | n.ExpoOp):
         a,b=literal(node.left),literal(node.right)
-        if isinstance(a,(int,float)) and isinstance(b,(int,float)):
-            return {n.AddOp:lambda:a+b,n.SubOp:lambda:a-b,n.MultOp:lambda:a*b,n.FloatDivOp:lambda:a/b,n.ExpoOp:lambda:a**b}[type(node)]()
+        if isinstance(a,int | float) and isinstance(b,int | float):
+            return BINARY_OPERATORS[type(node)](a,b)
     return UNKNOWN
 
 fields={'type','name','stack_size','fuel_value','fuel_acceleration_multiplier','fuel_top_speed_multiplier','place_result','placed_as_equipment_result','spoil_ticks','crafting_speed','mining_speed','resource_searching_radius','energy_usage','energy_consumption','energy_production','consumption','pumping_speed','rotation_speed','extension_speed','filter_count','max_belt_stack_size','bulk','inventory_size','fluid_capacity','capacity','module_slots','allowed_effects','crafting_categories','collision_box','selection_box','supply_area_distance','maximum_wire_distance','wire_max_distance','max_distance','logistics_radius','construction_radius','charging_offsets','rocket_parts_required','fixed_recipe','rocket_launch_products','minable','resource_categories','max_underground_distance','underground_distance','fluid_box','output_fluid_box','input_fluid_box','filter_count','max_energy','energy_per_move','energy_per_tick','max_to_charge','recharge_minimum','robot_slots_count','material_slots_count','charging_energy','charging_station_count','speed','max_speed','max_health','heat_buffer','neighbour_bonus','burner','energy_source','effect','distribution_effectivity','distribution_effectivity_bonus_per_quality_level','profile','target_temperature','fluid_usage_per_tick','effect_receiver','max_power_output','min_temperature','max_temperature','mining_time'}
@@ -84,7 +87,7 @@ paths=[checkout/'base/prototypes/item.lua',checkout/'base/prototypes/equipment.l
 for path in paths:
     source=path.relative_to(checkout).as_posix()
     manifest[source]=hashlib.sha256(path.read_bytes()).hexdigest()
-    tree=ast.parse(path.read_text())
+    tree=ast.parse(path.read_text(encoding='utf-8'))
     for node in ast.walk(tree):
         if not isinstance(node,n.Table):continue
         keys={f.key.id:f.value for f in node.fields if isinstance(f.key,n.Name)}
@@ -108,5 +111,5 @@ for f in fluids:
         items[f['name']+'-barrel']={'type':'item','name':f['name']+'-barrel','stack_size':items['barrel']['stack_size'],'source':'base/data-updates.lua','generated':True}
 manifest['base/data-updates.lua']=hashlib.sha256((checkout/'base/data-updates.lua').read_bytes()).hexdigest()
 result=dict(provenance=dict(version='2.1.24',commit=commit,repository='https://github.com/wube/factorio-data',date='2026-10-27',method='Recipe, technology and fluid declarations evaluated with only visual icon helpers removed; barrel recipes generated from base/data-updates.lua. Entity and item numeric fields read from literal Lua tables; computed fields omitted. This is not a runtime prototype dump.',sha256=manifest),recipes=sorted(recipes,key=lambda r:r['name']),technologies=sorted(techs,key=lambda t:t['name']),fluids=fluids,entities=sorted(entities.values(),key=lambda e:e['name']),items=sorted(items.values(),key=lambda e:e['name']),custom_inputs=list(raw['custom-input'].values()))
-(ROOT/'data/reference.json').write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n')
+(ROOT/'data/reference.json').write_text(json.dumps(result,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 print({k:len(result[k]) for k in ('recipes','technologies','entities','items','fluids')})

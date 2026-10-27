@@ -1,5 +1,7 @@
 import argparse, json, csv, zipfile
 from pathlib import Path
+lazy from content import enrich
+lazy from validate import validate
 parser = argparse.ArgumentParser(description='Build the standalone offline Factorio manual and ZIP.')
 parser.add_argument('--output-dir', type=Path, default=Path(__file__).resolve().parent)
 args = parser.parse_args()
@@ -327,8 +329,6 @@ glossary=[
 qol=[('2.1.24','Base','Selected fluid entities show pipeline visualization again; enabled by default.'),('2.1.24','Base','Only wire-compatible entities selectable while holding wire.'),('2.1.24','Base','Quickbar settings get their own interface section.'),('2.1.21','Base','Empty quickbar hotkey can pipette hovered item into that slot.'),('2.1.21','Base','Selector combinator index selection; read empty slots for containers; silo launched signal.'),('2.1.13','Base','Zoom-to-cursor setting where supported; new alert for detected enemy expansion.'),('2.1.9','Base','Decider combinator else output.'),('2.1.7','Base','Flippable burner drills, pumpjacks, compatible inserters.'),('2.1.7','Base','Circuit input/output red/green wire selection separately.'),('2.1.7','Base','Pipes, boilers, labs, land mines, heat pipes gain circuit options.'),('2.1.7','Base','Fluid mixing warnings and expanded pipe GUI/overlay.'),('2.1.7','Base','Fluid pumps connect to curved, non-aligned and end-of-wagon positions.'),('2.1.7','Base','Factoriopedia pinning and hiding unresearched content.'),('2.1.7','Base','Spidertron patrol and easier rolling-stock upgrades.'),('2.1.7','Base','Shotgun behavior/damage rebalance and changed enemy expansion.'),('2.1.7','Base','New assembler, refinery and rocket silo appearance.'),('2.1.7','Linux','SDL3, Wayland auto fallback behavior, IME, virtual keyboard and blueprint drag/drop.'),('2.1','Space Age only','Mixed rockets and platform logistics; ignore in base game.'),('2.1','Space Age only','Quality locomotives/wagons, landing-pad unloading bay and orbital transfers.'),('2.1','Space Age only','New planetary visuals/asteroid balancing; do not learn for base victory.')]
 
 payload=dict(meta=dict(title='Factorio 2.1.24 — Base-game field manual',version='2.1.24',date='2026-10-27',content='Base game, no Space Age / Quality / Elevated Rails',notes='Verified against official wiki 2026-10-27; learn in-game by doing; no automatic integration with game save.'),chapters=chapters,controls=controls,troubleshooting=troubles,glossary=glossary,qol=qol,sources=sources)
-from content import enrich
-from validate import validate
 payload = enrich(payload)
 validate(payload)
 (P/'manual_data.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
@@ -337,11 +337,11 @@ with (P/'controls.csv').open('w',newline='',encoding='utf8') as f:
     writer=csv.DictWriter(f,fieldnames=fields,lineterminator="\n")
     writer.writeheader();writer.writerows(payload['controls'])
 source_root=Path(__file__).resolve().parent
-template=(source_root/'web/template.html').read_text()
+template=(source_root/'web/template.html').read_text(encoding='utf-8')
 serialized=json.dumps(payload,ensure_ascii=False,separators=(',',':')).replace('<',r'\u003c')
 # Tokens are substituted in one pass so authored text cannot be interpreted as a template token.
 import re
-substitutions={'STYLE':(source_root/'web/styles.css').read_text(),'DATA':serialized,'SCRIPT':(source_root/'web/app.js').read_text()}
+substitutions=frozendict(STYLE=(source_root/'web/styles.css').read_text(encoding='utf-8'),DATA=serialized,SCRIPT=(source_root/'web/app.js').read_text(encoding='utf-8'))
 page=re.sub(r'__(STYLE|DATA|SCRIPT)__',lambda match:substitutions[match[1]],template)
 (P/'index.html').write_text(page,encoding='utf8')
 source_files=['build.py','content.py','validate.py','README.md','AGENT_HANDOFF.md','AUDIT.md','data/reference.json',

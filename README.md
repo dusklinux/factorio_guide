@@ -10,13 +10,15 @@ Exact recipe and technology records come from Wube’s pinned 2.1.24 prototype d
 
 ## Rebuild
 
-Python 3.9+ is required only for development. Run:
+Python 3.15+ is required only for development. Run:
 
 ```sh
 python3 build.py
 ```
 
 This validates content and writes `index.html`, `manual_data.json`, `controls.csv` and `factorio_2_1_24_offline_manual_and_agent_pack.zip`. Use `--output-dir /path/to/output` for a separate delivery folder. The archive includes sources, tests and documentation for rebuilding after extraction. Edit the source files listed in **AGENT_HANDOFF.md**, not the generated files.
+
+The Python sources use 3.15 lazy imports, `frozendict`, immutable JSON decoding, `sentinel` and unpacking comprehensions where applicable. Reference data stays immutable during the build; generated JSON and HTML retain their existing formats. CLI help works without installing optional browser or extraction dependencies. Text files use explicit UTF-8, including when Python's UTF-8 mode is disabled.
 
 ## Test
 

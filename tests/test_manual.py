@@ -4,19 +4,19 @@ import json
 import shutil
 import tempfile
 from pathlib import Path
-from playwright.sync_api import sync_playwright
+lazy from playwright.sync_api import sync_playwright
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--browser',choices=['chromium','firefox'],default='chromium')
 args=parser.parse_args()
 root=Path(__file__).resolve().parents[1]
 url=(root/'index.html').as_uri()
-data=json.loads((root/'manual_data.json').read_text())
+data=json.loads((root/'manual_data.json').read_text(encoding='utf-8'))
 base_routes=['home','search','library','controls','recipes','technology','machines','calculator','diagrams','help','glossary','whatsnew','sources','audit']
 lesson_routes=[c['id'] for c in data['chapters']]
 topic_routes=['topic/'+t['id'] for t in data['topics']]
 data_routes=[kind+'/'+r['name'] for kind,key in [('recipe','recipes'),('tech','technologies'),('entity','entities'),('item','items'),('fluid','fluids')] for r in data['reference'][key]]
-all_routes=base_routes+lesson_routes+topic_routes+data_routes
+all_routes=[*routes for routes in (base_routes,lesson_routes,topic_routes,data_routes)]
 
 with tempfile.TemporaryDirectory(prefix='factorio-browser-test-') as scratch, sync_playwright() as p:
     browser=(p.chromium.launch(executable_path=shutil.which('chromium'),headless=True,args=['--no-sandbox']) if args.browser=='chromium' else p.firefox.launch(headless=True))
@@ -62,7 +62,7 @@ with tempfile.TemporaryDirectory(prefix='factorio-browser-test-') as scratch, sy
     # Export and restore, including old edition exports and all-or-nothing validation.
     with page.expect_download() as info:page.locator('#exportBtn').click()
     exported=Path(scratch)/'progress.json';info.value.save_as(exported)
-    assert json.loads(exported.read_text())['progress']['setup:0'] is True
+    assert json.loads(exported.read_text(encoding='utf-8'))['progress']['setup:0'] is True
     dialogs=[]
     page.on('dialog',lambda dialog:(dialogs.append(dialog.message),dialog.accept()))
     def import_json(value,name='progress.json'):
@@ -71,7 +71,7 @@ with tempfile.TemporaryDirectory(prefix='factorio-browser-test-') as scratch, sy
         return info.value.message
     assert import_json({'manualVersion':'2.1.24','progress':{'setup:0':False}})=='Progress imported.'
     assert not checkbox.is_checked()
-    assert import_json(json.loads(exported.read_text()))=='Progress imported.'
+    assert import_json(json.loads(exported.read_text(encoding='utf-8')))=='Progress imported.'
     assert checkbox.is_checked()
     for invalid in [None,{}, {'manualVersion':'2.1.24','progress':[]},{'manualVersion':'2.1.24','progress':{'setup:0':'false'}},{'manualVersion':'other','progress':{}},{'manualVersion':'2.1.24','progress':{'missing:0':True}},{'manualVersion':'2.1.24','progress':{'setup:0':False},'preferences':{'textSize':'900'}}]:
         assert import_json(invalid).startswith('Could not import')
@@ -175,9 +175,9 @@ with tempfile.TemporaryDirectory(prefix='factorio-browser-test-') as scratch, sy
         assert not overflows,(width,text_size,overflows[:12])
     page.set_viewport_size({'width':1440,'height':1000});page.evaluate("prefs.textSize='100';applyPreferences()")
     page.reload();go('home')
-    if args.browser=='chromium':page.screenshot(path=str(root/'preview.png'),full_page=True)
+    if args.browser=='chromium':page.screenshot(path=str(Path(scratch)/'preview.png'),full_page=True)
     go('topic/oil-balancing')
-    if args.browser=='chromium':page.screenshot(path=str(root/'screenshot.png'),full_page=True)
+    if args.browser=='chromium':page.screenshot(path=str(Path(scratch)/'screenshot.png'),full_page=True)
     assert not errors,errors
     assert not requests,requests
     # Denied/corrupt storage: usable content and explicit export advice.

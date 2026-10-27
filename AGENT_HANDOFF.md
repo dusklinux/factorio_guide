@@ -18,6 +18,8 @@ Keep original chapter IDs and original step indexes stable so existing progress 
 
 Do not edit generated `index.html`, `manual_data.json` or `controls.csv` directly. Rebuild with `python3 build.py`. The default output is beside the script; `--output-dir` supports a separate delivery folder. The archive includes everything needed to rebuild after extraction.
 
+Development targets Python 3.15+. The loaded numerical reference is a `frozendict`/tuple snapshot; lesson and progress-authoring structures remain mutable. Optional extraction/browser imports stay lazy so `--help` works before installing those dependencies. Keep explicit UTF-8 for source assets and JSON/CSV files.
+
 No CDN, remote fonts, remote images, telemetry or runtime fetches. External links are optional source verification only. Keep file-URL support and test both Chromium and Firefox offline. Preserve keyboard focus and avoid using color alone to explain diagrams. Include text equivalents for visual material.
 
 For numerical facts, prefer Wube's exact-version declarations and current in-game Factoriopedia. Wiki pages can contain expansion tabs, stale sections or contradictory figures. Keep source attribution and clearly label uncertain, computed and experimental claims. Respect copyrighted prose and sprites: author original explanations and schematic visuals.

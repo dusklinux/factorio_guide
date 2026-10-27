@@ -1,13 +1,14 @@
 """Dependency-free content, provenance and packaging regression checks."""
-import copy
+lazy import copy
 import csv
 import json
+lazy import os
 import re
-import subprocess
+lazy import subprocess
 import sys
-import tempfile
+lazy import tempfile
 import unittest
-import zipfile
+lazy import zipfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -17,7 +18,7 @@ from validate import validate
 class ManualDataTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.data=json.loads((ROOT/'manual_data.json').read_text())
+        cls.data=json.loads((ROOT/'manual_data.json').read_text(encoding='utf-8'))
         cls.ref=cls.data['reference']
         cls.recipes={r['name']:r for r in cls.ref['recipes']}
         cls.techs={t['name']:t for t in cls.ref['technologies']}
@@ -86,13 +87,13 @@ class ManualDataTests(unittest.TestCase):
         self.assertEqual(port['construction_radius'],55)
 
     def test_generated_data_agrees(self):
-        html=(ROOT/'index.html').read_text()
+        html=(ROOT/'index.html').read_text(encoding='utf-8')
         embedded=re.search(r'<script id="manualdata" type="application/json">(.*?)</script>',html,re.S)
         self.assertIsNotNone(embedded)
         self.assertEqual(json.loads(embedded[1]),self.data)
         self.assertNotRegex(html,r'<(?:script|img)[^>]+src=["\']https?://')
         self.assertNotRegex(html,r'<link[^>]+href=["\']https?://')
-        with (ROOT/'controls.csv').open() as f:self.assertEqual(list(csv.DictReader(f)),self.data['controls'])
+        with (ROOT/'controls.csv').open(encoding='utf-8',newline='') as f:self.assertEqual(list(csv.DictReader(f)),self.data['controls'])
 
     def test_archive_rebuild(self):
         with zipfile.ZipFile(ROOT/'factorio_2_1_24_offline_manual_and_agent_pack.zip') as z:
@@ -104,5 +105,18 @@ class ManualDataTests(unittest.TestCase):
                 subprocess.run([sys.executable,str(extracted/'build.py'),'--output-dir',str(output)],check=True,capture_output=True)
                 for name in ('index.html','manual_data.json','controls.csv','README.md','AGENT_HANDOFF.md','AUDIT.md'):
                     self.assertEqual((output/name).read_bytes(),(ROOT/name).read_bytes(),name)
+
+    def test_cli_help_without_optional_dependencies(self):
+        for name in ('build.py','tools/extract_reference.py','tests/test_manual.py'):
+            with self.subTest(script=name):
+                result=subprocess.run([sys.executable,'-S',str(ROOT/name),'--help'],check=True,capture_output=True,encoding='utf-8')
+                self.assertIn('usage:',result.stdout.lower())
+
+    def test_build_with_utf8_mode_disabled(self):
+        environment=os.environ | {'LC_ALL':'C','PYTHONUTF8':'0','PYTHONCOERCECLOCALE':'0'}
+        with tempfile.TemporaryDirectory(prefix='factorio-encoding-test-') as temp:
+            subprocess.run([sys.executable,'-X','warn_default_encoding','-W','error::EncodingWarning',str(ROOT/'build.py'),'--output-dir',temp],env=environment,check=True,capture_output=True,encoding='utf-8')
+            for name in ('index.html','manual_data.json','controls.csv'):
+                self.assertEqual((Path(temp)/name).read_bytes(),(ROOT/name).read_bytes(),name)
 
 if __name__=='__main__':unittest.main()

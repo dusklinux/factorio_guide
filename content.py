@@ -425,7 +425,7 @@ topic('inventory-workflow','Inventory, crafting queue, filters and the quickbar'
  ('Quickbar entries are references','Put frequently built machines and planning tools on the quickbar. Clearing a shortcut does not discard the referenced inventory item. Slot filters can reserve cargo space for selected items. Learn the difference between an inventory filter, a quickbar reference and an inserter filter: each constrains a different operation.')],
  sources=['controls','prototypes'],related=['orientation','circuits-production'],experiment='In a spare chest, test one-stack, all-matching and half-stack transfer with small quantities. Predict the result in each inventory before using the shortcut on valuable production stock.',diagram='input')
 
-SOURCE_ADDITIONS={
+SOURCE_ADDITIONS=frozendict({
  'prototypes':('Wube 2.1.24 prototype definitions (pinned tag)','https://github.com/wube/factorio-data/tree/2.1.24'),
  'silo-script':('Wube base-game victory script','https://github.com/wube/factorio-data/blob/2.1.24/core/lualib/silo-script.lua'),
  'releases':('Official stable and experimental version status (live)','https://factorio.com/api/latest-releases'),
@@ -459,9 +459,9 @@ SOURCE_ADDITIONS={
  'mapgen':('World generation and settings','https://wiki.factorio.com/Map_generator'),
  'radar':('Radar observation and map coverage','https://wiki.factorio.com/Radar'),
  'time':('Simulation ticks and crafting speed (day table may be stale)','https://wiki.factorio.com/Time'),
-}
+})
 
-CHAPTER_TOPICS={
+CHAPTER_TOPICS=frozendict({
  'setup':['world','orientation','backups'], 'movement':['orientation','inventory-workflow','map-remote'],
  'mining':['iron','copper','stone-coal'], 'power':['steam-power','electricity','power-recovery'],
  'belts':['belts-lanes','splitters','inserter-details'], 'automation':['flow','ratios','circuits-production'],
@@ -474,7 +474,7 @@ CHAPTER_TOPICS={
  'late':['science-progression','science-ratios','rocket-budget'], 'nuclear':['uranium','nuclear-heat','solar'],
  'modules':['modules-math','beacon-math'], 'rocket':['rocket-plan','rocket-budget','after-launch'],
  'qol':['map-remote','backups'], 'linux':['backups','performance'], 'debug':['diagnosis','statistics','flow'],
-}
+})
 
 CONTROL_ADDITIONS=[
  ('Build and interact','Shift+Left mouse with planner','Cancel planned deconstruction or upgrade','Drag over pending orders with the appropriate planner held to cancel them.','Base'),
@@ -497,7 +497,7 @@ CONTROL_ADDITIONS=[
  ('Editor / debug','Unbound','Toggle selected entity','Optional advanced debug action; bind only if you need it for controlled testing.','Editor / debug'),
 ]
 
-CONTROL_EXAMPLES={
+CONTROL_EXAMPLES=frozendict({
  'Pipette / clear cursor':('World; hover the object you want, or clear a held item/tool.','Hover a furnace and press Q to select the matching available item; press Q again to clear your cursor.','It selects the type from your inventory; it does not copy a real machine into existence.'),
  'Move all matching stacks':('Open inventory over a matching item, or world fast transfer.','Ctrl-click iron in a chest inventory to move matching plates; use a small test chest to learn the empty-slot behavior.','Over an empty slot this can transfer many item types. World transfer with an empty cursor can take entity contents.'),
  'Move one stack':('Two compatible inventories are open; hover a stack.','Shift-click one coal stack in your inventory to put it in the open chest.','The hovered stack and selected inventory determine direction.'),
@@ -508,13 +508,13 @@ CONTROL_EXAMPLES={
  'Super-force build':('World with a supported building or blueprint placement.','Inspect a small blocked blueprint placement with Ctrl+Shift held before placing it.','It can order existing factory equipment removed. Confirm the visible selection before releasing the mouse.'),
  'Temporary train stop':('Locomotive map or supported train-control context.','Ctrl-click a reachable rail location to send the selected train there once.','An arbitrary map click without a selected train context is not a destination order.'),
  'Change quality selection':('Cursor quality selection; Quality enabled.','Use this only in a separate game with the Quality mod enabled.','This manual’s base-game ratios assume normal quality and exclude quality progression.'),
-}
+})
 
 def enrich(payload):
     payload['troubleshooting']=[list(row) for row in payload['troubleshooting']]
     payload['glossary']=[list(row) for row in payload['glossary']]
     payload['sources'].update(SOURCE_ADDITIONS)
-    ref=json.loads((Path(__file__).parent/'data/reference.json').read_text())
+    ref=json.loads((Path(__file__).parent/'data/reference.json').read_text(encoding='utf-8'),object_pairs_hook=frozendict,array_hook=tuple)
     payload['reference']=ref
     payload['topics']=TOPICS
     payload['meta'].update(edition=2,notes='Numerical reference extracted from Wube 2.1.24 commit '+ref['provenance']['commit']+'. Explanations researched against official references; not an in-game replay certification.')
@@ -650,7 +650,7 @@ def enrich(payload):
     return payload
 
 # Examples describe concrete task contexts rather than merely repeating action names.
-CONTROL_PRACTICE={
+CONTROL_PRACTICE=frozendict({
  'Move up':'Hold W in world view to walk toward the top of the screen; release it to stop.',
  'Move down':'Hold S to walk away from your starter drill; try the same movement in a safe vehicle test to learn its driving mode.',
  'Move left':'Walk left around your furnace row with A and leave enough corridor for future movement.',
@@ -745,4 +745,4 @@ CONTROL_PRACTICE={
  'Scroll tooltip':'With a supported anchored detailed tooltip, Shift-scroll to reach information beyond its visible portion.',
  'Previous mod':'While browsing the mod-selection interface, use Backspace or the alternative mouse button to return to the previous selection.',
  'Next replay player':'While watching a replay with multiple players, press F10 to cycle whose perspective you follow.',
-}
+})
