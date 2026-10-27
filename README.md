@@ -1,15 +1,49 @@
-# Factorio 2.1.24 beginner manual
+# Factorio 2.1.24 offline field manual
 
-1. Double-click `index.html` in a browser. No server or internet required.
-2. Work through the numbered lessons; check a step only when you complete it in the game.
-3. Use keyboard controls, troubleshooting, glossary, diagrams and current-version reference as needed.
-4. Use **Export progress** to save progress as a JSON file and **Import progress** to move it to another browser/computer.
-5. For a local AI builder, start with `AGENT_HANDOFF.md` and `manual_data.json`; `controls.csv` is a searchable/exportable controls table.
+Open **index.html** in Firefox or Chromium. No server, internet connection or build step is needed for reading.
 
-To rebuild after editing `build.py`, run `python3 build.py`. It writes the HTML, data, references and ZIP beside the script. Use `python3 build.py --output-dir /path/to/output` for a separate output folder. Python 3 is needed only for rebuilding.
+Start with the numbered walkthrough. Use the topic library for deeper explanations and global search for lessons, keybinds, troubleshooting, recipes, technologies, machines, items and fluids. The manual includes worked examples, experiments, production/science/launch calculators, larger text, high contrast and one-step reading. Scope: **base game, without Space Age, Quality, Recycler or Elevated Rails**.
 
-Browser regression checks (development only): install Playwright in a virtual environment with `pip install playwright`, then run `python tests/test_manual.py`. This uses system Chromium when available; otherwise run `playwright install chromium` first. For Firefox, run `playwright install firefox` and `python tests/test_manual.py --browser firefox`. Tests open the manual via `file:///` with networking disabled.
+Checkboxes remember what you tried; the manual does not read your game save. Use **Export progress** for a backup and **Import progress** to restore or transfer it. Imports replace progress only after validation. Original 2.1.24 progress exports remain supported. A storage warning appears if the browser cannot save locally. Keep game saves and blueprint exports separately.
 
-Progress is saved in this browser when local storage is available. If saving is blocked, the manual displays a notice; export a backup before closing. Imports accept exports from manual version 2.1.24 and replace current progress only after validation.
+Exact recipe and technology records come from Wube’s pinned 2.1.24 prototype definitions. Read **AUDIT.md** or the in-app **Audit & coverage** page for corrections, evidence and remaining limits. This is a substantial researched reference, not a certified in-game replay or an exhaustive account of every engine edge case.
 
-This is a broad, usable first-pass manual and research handoff, **not an exhaustive verified representation of every vanilla game prototype, machine, recipe or Lua/debug binding**. The handoff identifies how to reach that standard.
+## Rebuild
+
+Python 3.9+ is required only for development. Run:
+
+```sh
+python3 build.py
+```
+
+This validates content and writes `index.html`, `manual_data.json`, `controls.csv` and `factorio_2_1_24_offline_manual_and_agent_pack.zip`. Use `--output-dir /path/to/output` for a separate delivery folder. The archive includes sources, tests and documentation for rebuilding after extraction. Edit the source files listed in **AGENT_HANDOFF.md**, not the generated files.
+
+## Test
+
+Content and archive checks need only Python:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_data.py' -v
+```
+
+For real-browser checks, install development dependencies in a virtual environment:
+
+```sh
+python3 -m venv .venv
+.venv/bin/pip install playwright
+.venv/bin/playwright install chromium firefox
+.venv/bin/python tests/test_manual.py
+.venv/bin/python tests/test_manual.py --browser firefox
+```
+
+The Chromium check uses system Chromium when available. Tests open `file:///` with networking disabled.
+
+## Refresh the pinned data
+
+A normal rebuild uses the committed JSON and needs no Lua, parser or network access. To reproduce extraction, install Lua and the Python development package `luaparser`, check out Wube’s `factorio-data` tag `2.1.24`, then run:
+
+```sh
+python3 tools/extract_reference.py /path/to/factorio-data
+```
+
+The extractor rejects a checkout with a different commit. Computed entity fields are omitted; see the provenance in `data/reference.json`. Original text and schematic diagrams are authored for this manual. The factual data source is [Wube factorio-data](https://github.com/wube/factorio-data); no proprietary game sprites are bundled.
