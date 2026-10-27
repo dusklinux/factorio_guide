@@ -1,0 +1,2082 @@
+{
+  "meta": {
+    "title": "Factorio 2.1.24 — Base-game field manual",
+    "version": "2.1.24",
+    "date": "2026-10-27",
+    "content": "Base game, no Space Age / Quality / Elevated Rails",
+    "notes": "Verified against official wiki 2026-10-27; learn in-game by doing; no automatic integration with game save."
+  },
+  "chapters": [
+    {
+      "id": "setup",
+      "title": "Before starting: the correct game",
+      "phase": "BEGIN",
+      "why": "Start a base-game Freeplay save with the right game content and comfortable settings.",
+      "steps": [
+        "At the main menu, open Mods. Keep the base game enabled. Disable Space Age, Quality, Elevated Rails, and any other overhaul/gameplay mods for this manual. The Space Age expansion is NOT required.",
+        "Start with the built-in Tutorial scenarios if you have never placed a drill or inserter. Then create a New Game → Freeplay world. Choose default settings or increase starting area if attacks are stressful.",
+        "For a gentler learning save, consider Peaceful mode, or lower enemy frequency. These settings change the challenge; some achievements have restrictions. Save under a clear name and make backups.",
+        "Open Settings → Controls to confirm keyboard bindings. Turn on Alt-mode (Alt) after you begin; it exposes recipes, filter icons, and directions.",
+        "Your base-game win condition is to build a rocket silo, make a rocket and satellite, place a cargo landing pad, and launch the rocket. The satellite yields space science."
+      ],
+      "diagram": "goal",
+      "tips": [
+        "Use one small goal at a time; leave space for future machines.",
+        "Do not try to make a perfect megabase or memorize every recipe."
+      ],
+      "checks": [
+        "I know whether Space Age is disabled.",
+        "I can find Controls, Freeplay and Save."
+      ],
+      "misconceptions": [
+        "“Version 2.1” does not mean Space Age is active."
+      ],
+      "sources": [
+        "version",
+        "rocket",
+        "science"
+      ]
+    },
+    {
+      "id": "movement",
+      "title": "The screen, cursor and first 15 shortcuts",
+      "phase": "BEGIN",
+      "why": "Learn a small set of actions that makes the entire game less confusing.",
+      "steps": [
+        "W/A/S/D move the engineer. Mouse wheel zooms. E opens the character/inventory. Left-click opens machine windows or places held buildings; hold right-click to mine/remove a structure.",
+        "Q clears the held item; when hovering an object, Q pipettes that object to your cursor if available. R rotates; Shift+R reverses rotation; H and V flip compatible layouts.",
+        "Alt toggles informative overlays. F collects items from the ground or nearby belt. Z drops one held item. Ctrl+left-click transfers item stacks quickly in contextual situations.",
+        "Use Shift+right-click on a configured machine to copy its settings and Shift+left-click on another compatible machine to paste. Press T for research, P for production statistics, Tab/M for map, and B for blueprint library.",
+        "Hold a belt, pole, or underground belt and drag to place a repeated run. E closes many opened windows; Esc opens menu or backs out. Learn the controls panel if your Wayland compositor consumes shortcuts."
+      ],
+      "diagram": "input",
+      "tips": [
+        "Default controls are context-dependent; the same key can do different things in an inventory versus in the world.",
+        "The quickbar is a shortcut bar, not extra item storage."
+      ],
+      "checks": [
+        "I can rotate, pipette and clear my cursor.",
+        "I can move items into/out of a machine without manually dragging each stack."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "controls",
+        "hotkeys"
+      ]
+    },
+    {
+      "id": "mining",
+      "title": "Mining and the first furnace",
+      "phase": "BEGIN",
+      "why": "Understand the first complete production chain: ore becomes metal.",
+      "steps": [
+        "Locate iron ore, copper ore, stone and coal using the map. Mine a little iron, stone and coal by right-clicking on resources.",
+        "Craft or use a burner mining drill and stone furnace. Place the drill over iron ore and point its output arrow toward the furnace or a chest. Open the drill and add coal.",
+        "Fuel the furnace with coal as well. The drill places ore into the furnace; the furnace turns ore into iron plates without player intervention.",
+        "Repeat for copper. Mine stone for extra furnaces; smelt some stone into stone bricks for later buildings.",
+        "If nothing runs, check: resource under drill, fuel in drill, fuel in furnace, drill arrow, blocked output and furnace contents."
+      ],
+      "diagram": "ore",
+      "tips": [
+        "Burner drills burn fuel; electric drills need electric power.",
+        "A building can be functional even if you have no inserters yet."
+      ],
+      "checks": [
+        "My miner places ore into a furnace.",
+        "I can explain why fuel and output are separate needs."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "quick",
+        "machines"
+      ]
+    },
+    {
+      "id": "power",
+      "title": "Electricity: the first steam plant",
+      "phase": "BEGIN",
+      "why": "Give electric machines reliable, understandable power.",
+      "steps": [
+        "Place one offshore pump on water. Its water outlet must connect by pipe directly or indirectly to a boiler water input.",
+        "Put coal into the boiler or feed coal with an inserter. Connect the boiler steam outlet to two steam engines using pipes or direct adjacency.",
+        "Place electric poles so their wire network connects the engines and their blue power supply areas overlap the machines you want powered.",
+        "Open any connected electric pole to inspect production, consumption and satisfaction. A working plant with no demand may idle; that is normal.",
+        "Expand gradually. The core energy ratio is 1 boiler per 2 steam engines. For version 2.1, the official water-flow calculation says an offshore pump can theoretically feed 200 boilers, but long pipelines may need pumps and practical layouts should be modular.",
+        "If a steam setup fails: trace water → boiler fuel → steam outlet → engine → electric wire → pole coverage → consuming building."
+      ],
+      "diagram": "power",
+      "tips": [
+        "A boiler uses 1.8 MW of fuel at full output; two steam engines can generate 0.9 MW each.",
+        "Power wires connecting poles are not the same thing as the blue coverage area for machines."
+      ],
+      "checks": [
+        "I can open the electricity graph.",
+        "I can tell “no electricity”, “insufficient electricity” and “no fuel” apart."
+      ],
+      "misconceptions": [
+        "Do not use pre-2.0 “1 offshore pump for 20 boilers” as the current water limit."
+      ],
+      "sources": [
+        "power",
+        "fluid"
+      ]
+    },
+    {
+      "id": "belts",
+      "title": "Belts, inserters and two lanes",
+      "phase": "BEGIN",
+      "why": "Move things automatically while understanding where every item travels.",
+      "steps": [
+        "Build an electric mining drill, an inserter, belt, furnace and another inserter. The drill outputs ore directly onto a belt.",
+        "Build the first inserter to pick ore from the belt and put it into a furnace; use a second inserter to move plates out to another belt or chest.",
+        "Each belt has TWO lanes. Observe which lane receives items and how the inserter drops items. Rotation R changes direction; Alt-mode makes arrows readable.",
+        "Learn underground belts to cross another line, and splitters to divide/merge material streams. A splitter does not magically increase throughput.",
+        "With a splitter GUI, set input/output priority and filters when needed. A common future use is giving an important machine priority for scarce resources.",
+        "Reference rates for unstacked items on both lanes: yellow belt 15/s, red 30/s, blue 45/s. Upgrades need supporting production; a faster belt does not create more ore."
+      ],
+      "diagram": "belt",
+      "tips": [
+        "Limit an output chest to a few slots so you do not unintentionally use every available resource on low-priority products.",
+        "Drag poles, belts, underground pieces and similar buildings for much faster placement."
+      ],
+      "checks": [
+        "I can explain both belt lanes.",
+        "I can fix a furnace that is missing ore or unable to unload."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "belts",
+        "hotkeys"
+      ]
+    },
+    {
+      "id": "automation",
+      "title": "Automated crafting and reusable factory blocks",
+      "phase": "EARLY",
+      "why": "Make useful items without handcrafting them repeatedly.",
+      "steps": [
+        "Research Automation, craft an assembling machine, place it inside powered pole coverage and left-click to choose a recipe.",
+        "A recipe needs input ingredients, enough power, a valid assembler tier, and somewhere for the output to go. Feed ingredients from belts/chests with inserters; remove results with another inserter.",
+        "Build dedicated mini-lines for gears, copper cable, electronic circuits, belts, inserters, ammunition and machines. They need not be fully optimized.",
+        "Use Shift+right-click / Shift+left-click to copy recipe/settings among similar assemblers. Use Ctrl+C and Ctrl+V to duplicate a useful layout as ghosts, then build its pieces by hand or by robots later.",
+        "Learn the bottleneck rule: the slowest upstream ingredient determines downstream production. If something stops, follow its inputs backward."
+      ],
+      "diagram": "assemble",
+      "tips": [
+        "Electronic circuits use iron plates and copper cable; cable is bulky, so make it beside circuit assemblers rather than carrying massive cable belts across the factory.",
+        "Machine craft speed, recipe time, module bonuses and inserter speed affect ratios."
+      ],
+      "checks": [
+        "I have an assembler that runs without my inventory open.",
+        "I can identify which ingredient is missing."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "machines",
+        "research"
+      ]
+    },
+    {
+      "id": "redgreen",
+      "title": "Red and green science",
+      "phase": "EARLY",
+      "why": "Turn your factory into a research engine.",
+      "steps": [
+        "Open T. Choose a technology that needs automation (red) science packs. Feed those packs to a powered lab with an inserter or by hand.",
+        "Automate red science from copper plates and iron gears; automate gears in an assembler rather than continuously handcrafting them.",
+        "Make transport belts and inserters and automate logistic (green) science: it requires one belt and one inserter per pack.",
+        "Feed both science types to labs on belts, by inserters from chests, or by inserter-to-inserter transfer between labs.",
+        "Prioritize logistics, steel processing, electronics, automation tiers and anything that solves an immediate limitation. A research queue can handle planned follow-ups."
+      ],
+      "diagram": "science",
+      "tips": [
+        "Science packs are not points you manually spend: powered labs consume them over time for the selected technology.",
+        "Military (black) science can be optional for launching the base-game rocket, though very useful for defense."
+      ],
+      "checks": [
+        "My labs research automatically.",
+        "I know what a lab is waiting for if its progress stalls."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "science",
+        "research"
+      ]
+    },
+    {
+      "id": "defense",
+      "title": "Pollution, enemies and survival",
+      "phase": "EARLY",
+      "why": "Prevent surprise losses without letting combat dominate the learning experience.",
+      "steps": [
+        "Open the map and enable pollution display to see the cloud. Pollution spreads and can provoke attacks when it reaches enemy nests; expansion and enemy evolution add future pressure.",
+        "Automate basic ammunition, build gun turrets around likely approaches and keep them supplied. Walls can buy time; radars reveal distant threats.",
+        "Fight with Space (nearest enemy near the cursor), Shift+Space (selected target) and switch weapons with C. Keep ammo in both turrets and your character.",
+        "Before expanding toward enemy bases, prepare spare turrets, ammo, repair packs and a retreat route. Later use laser or flamethrower turrets if appropriate.",
+        "Version 2.1 adjusted enemy expansion patterns; do not rely on leaving a map unexplored as a way to make nearby expansion easier.",
+        "When you feel overwhelmed, inspect the world settings on a new practice save rather than increasing your factory production blindly."
+      ],
+      "diagram": "defense",
+      "tips": [
+        "Build a small perimeter early when attacks are enabled.",
+        "Avoid running directly across active train tracks: trains are dangerous."
+      ],
+      "checks": [
+        "I can read the pollution overlay.",
+        "I have automatic ammo production and at least one protected approach."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "combat",
+        "version"
+      ]
+    },
+    {
+      "id": "steel",
+      "title": "Scale iron, copper, steel and stone",
+      "phase": "EARLY",
+      "why": "Prepare for mid-game without rebuilding everything at once.",
+      "steps": [
+        "Make repeatable rows of electric drills feeding belts. Spread drills across ore patches, taking account of their mining areas.",
+        "Separate iron and copper smelting lines. Steel is made by smelting iron plates again; it needs a meaningful share of your iron production.",
+        "Leave build space beside every line. When it is slow, first increase miners, then furnace capacity, then belt throughput, then consumers.",
+        "Reserve simple lanes or a mall (a collection of assemblers that makes belts, inserters, poles, furnaces, rails and other buildings for your personal use).",
+        "Learn why a buffer chest hides brief shortages but does not fix a permanently under-supplied production line."
+      ],
+      "diagram": "steel",
+      "tips": [
+        "Do not put every resource through one narrow bottleneck.",
+        "Use production statistics P to see whether a needed item is being produced and consumed."
+      ],
+      "checks": [
+        "I know why steel demand can suddenly drain iron."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "machines",
+        "statistics"
+      ]
+    },
+    {
+      "id": "trains1",
+      "title": "Railways I: your first automatic delivery",
+      "phase": "MID",
+      "why": "Use trains to connect distant ore fields safely and simply.",
+      "steps": [
+        "Make a small one-way loop with a locomotive and cargo wagon; one-directional tracks are easier to learn than bidirectional shared track.",
+        "Put a train stop beside each station track with the correct orientation (its arrow indicates arriving trains). Give stops clear distinct names.",
+        "Load the cargo wagon at the mine using inserters from belts or chests. Unload at the main base using inserters into chests or belts; power the station equipment.",
+        "Fuel the locomotive. Open the train GUI and create a schedule: Mine → Full cargo; Base → Empty cargo. Switch to Automatic.",
+        "For longer railways, add regular rail signals to divide the line into blocks long enough to contain a complete train, including distance before merges.",
+        "When No path appears, check the railway is continuous, locomotive faces a viable route, stop alignment, rail signals on the right-hand travel side, and whether the destination is reachable."
+      ],
+      "diagram": "train",
+      "tips": [
+        "A train stop is a destination, not a rail signal.",
+        "Train limits cap how many trains are permitted to reserve a station; they do not cap cargo."
+      ],
+      "checks": [
+        "One train travels automatically and returns.",
+        "I can identify a valid one-way rail signal position."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "rail",
+        "trains"
+      ]
+    },
+    {
+      "id": "trains2",
+      "title": "Railways II: blocks, chain signals and junctions",
+      "phase": "MID",
+      "why": "Learn how multiple trains share tracks without getting stuck.",
+      "steps": [
+        "Think of rail signals as doors dividing continuous rail into colored BLOCKS. Only one train can own a block at once (a long train can span several blocks).",
+        "Normal rail signal: “enter if the following block is free.” Chain signal: “enter only if the following path is clear far enough to exit.”",
+        "For a junction shared by crossing routes, place chain signals before and inside the conflict region where necessary; regular rail signals after the junction only when a full train can fit behind them.",
+        "Always signal from the viewpoint of the travel direction: place signals on the RIGHT side. For two-way track segments pair opposite-facing signals, but two independent one-way tracks are much simpler.",
+        "A chain signal can display BLUE when some exits are free and some blocked; it is not simply a green/red version of an ordinary signal.",
+        "Introduce a second train after verifying each loop and each block. Name same-purpose stations consistently and consider station train limits, stacking areas and future train interrupts."
+      ],
+      "diagram": "signals",
+      "tips": [
+        "Mnemonic: chain in, rail out — a starting rule, not a substitute for separating every actual crossing/conflict.",
+        "Do not place a normal signal directly before a crossing if the train could stop inside the crossing."
+      ],
+      "checks": [
+        "I can explain a block in one sentence.",
+        "I can explain why a chain signal belongs before an intersection."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "rail",
+        "trains"
+      ]
+    },
+    {
+      "id": "fluids",
+      "title": "Pipes, pumps and fluid networks",
+      "phase": "MID",
+      "why": "Make the transition from solid items to fluids without guessing at pipe behavior.",
+      "steps": [
+        "Unlike ore and plates, fluids live in pipe connections, tanks, machines and fluid wagons. Inserters cannot grab loose fluid. Barrels are an optional method for transporting fluid as items.",
+        "In modern Factorio, all connected pipes/tanks form one fluid segment. Fluid transport within a valid segment is effectively instant, with per-port transfer limits; it is not old-style pipe-by-pipe pressure simulation.",
+        "A segment extending beyond a 320×320-tile bounding area becomes overextended. Split long pipelines into new segments with powered pumps; confirm pump direction.",
+        "Different-fluid pipelines cannot simply merge. Version 2.1 warns about incompatible fluids and 2.1.24 shows the pipeline overlay when selecting a fluid entity by default.",
+        "Use Alt-mode to reveal fluid input/output sockets. Open pipes and tanks to inspect pipeline contents and flow; for complex builds, connect them to red/green circuit wires if you want readouts.",
+        "For train fluids: put pumps beside fluid wagons and power them. The 2.1 pump connector supports improved wagon alignment, including ends and curves."
+      ],
+      "diagram": "fluid",
+      "tips": [
+        "A machine can stall because its output fluid is full, not because it is short of input.",
+        "Pumps require electricity; offshore pumps do not require electricity."
+      ],
+      "checks": [
+        "I can tell a fluid flow problem from a fuel/recipe problem."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "fluid",
+        "version"
+      ]
+    },
+    {
+      "id": "oil",
+      "title": "Oil processing: plastic, sulfur, cracking",
+      "phase": "MID",
+      "why": "Understand the biggest new resource chain before blue science.",
+      "steps": [
+        "Place pumpjacks on crude oil wells, supply electric power, and pipe crude oil into a refinery. Use the basic oil processing recipe first: crude oil becomes petroleum gas.",
+        "Route petroleum gas to chemical plants. Plastic requires petroleum gas and coal; sulfur requires petroleum gas and water. Both become essential intermediates.",
+        "With Advanced oil processing, also supply water to the refinery. It produces heavy oil, light oil and petroleum gas from separate output ports.",
+        "Use heavy oil for lubricant; use light oil for solid fuel/rocket fuel. Crack excess heavy oil into light oil, and excess light oil into petroleum gas when petroleum runs short.",
+        "A refinery producing several fluids stops if even one output backs up. Store fluids in tanks and use pump conditions to crack only surplus oil.",
+        "Use the status icon and fluid GUI, not guesswork: check every pipe, every recipe input, and whether any refinery output is full."
+      ],
+      "diagram": "oil",
+      "tips": [
+        "Simple control example: activate heavy-oil cracking pump when heavy oil in tank exceeds a chosen reserve threshold.",
+        "Light oil is often a better solid-fuel feedstock than petroleum gas."
+      ],
+      "checks": [
+        "My plastic plant runs automatically.",
+        "I can explain what to do when heavy oil backs up."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "oil",
+        "fluid"
+      ]
+    },
+    {
+      "id": "blue",
+      "title": "Blue science, engines and advanced circuitry",
+      "phase": "MID",
+      "why": "Build the first fully oil-dependent science line.",
+      "steps": [
+        "Automate sulfur and plastic. Automate advanced circuits from electronic circuits, plastic and copper cable.",
+        "Build engine units from steel, iron gears and pipes. Engines must be crafted in an assembler; they cannot be handcrafting shortcuts for everything.",
+        "Make chemical (blue) science from advanced circuits, engine units and sulfur in the required recipe counts.",
+        "Add blue science to labs; research advanced oil processing and other technologies that unlock logistic robots, modules, better machines and later science.",
+        "If blue science is stalled, follow the dependency chain in order: crude → petroleum → plastic/sulfur, plus iron/steel → engines and green circuits → advanced circuits."
+      ],
+      "diagram": "science",
+      "tips": [
+        "Place assemblers for low-throughput expensive parts near their supply of circuits and plastic.",
+        "Keep a supply of lubricant for electric engines and higher-tier belts."
+      ],
+      "checks": [
+        "I have automated all ingredients for blue science."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "science",
+        "oil"
+      ]
+    },
+    {
+      "id": "robots",
+      "title": "Robots I: construction vs logistics",
+      "phase": "MID",
+      "why": "Stop manually placing every repeated factory element.",
+      "steps": [
+        "Research robotics and construct roboports, construction robots and logistics robots. A robot needs a network/home, charge and a compatible task.",
+        "Hover a roboport: orange 50×50 is logistics service area, green 110×110 is construction coverage. Two roboports share a logistics network when their orange areas touch.",
+        "Place construction robots into a roboport, put needed buildings in available provider/storage chests, and place a blueprint or ghost inside green construction coverage.",
+        "A passive provider chest offers items to a network. A storage chest accepts unsorted items. A requester chest requests a specified minimum stock from providers. Active provider and buffer chests have specialized roles.",
+        "Logistics robots move items in the orange-connected logistics network; construction robots handle building, deconstruction and repairs within green coverage. Personal roboport equipment is a separate local build network.",
+        "If bots idle, verify task coverage, item availability, chest type, power, roboport connection, number of bots and charging congestion."
+      ],
+      "diagram": "bots",
+      "tips": [
+        "Do not expect logistic bots to fill a chest outside orange coverage even though construction robots can build there.",
+        "Requester chests depend on later research; begin with construction robots and passive/storage chests if requesters are not unlocked yet."
+      ],
+      "checks": [
+        "I can distinguish construction and logistics bots.",
+        "I can explain orange versus green coverage."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "bots",
+        "logistics"
+      ]
+    },
+    {
+      "id": "blueprints",
+      "title": "Blueprints, ghosts and painless rebuilding",
+      "phase": "MID",
+      "why": "Save designs and repeat them with fewer mistakes.",
+      "steps": [
+        "Ctrl+C drag-selects entities to copy as a temporary blueprint. Ctrl+V pastes it. Ctrl+X cuts/marks for removal. Ctrl+Z undoes certain build/deconstruct actions; Ctrl+Y or Ctrl+Shift+Z redoes.",
+        "Create a permanent blueprint with Alt+B. Store it in the blueprint library B or organize several in a blueprint book.",
+        "A translucent ghost is a plan, not an automatically built object. Construction robots need the item, construction coverage and power to build it.",
+        "Shift+left-click when holding a building makes a ghost even if you do not have the item. Use the upgrade planner Alt+U and deconstruction planner Alt+D for large changes.",
+        "Press H/V to flip compatible blueprints. Some buildings and complex recipes cannot be flipped in every orientation; inspect pipe ports and outputs.",
+        "Try copy-pasting four working smelters or a small assembler line. Resist the urge to import a giant external blueprint before you understand its flows."
+      ],
+      "diagram": "blueprint",
+      "tips": [
+        "Shift+mouse wheel cycles clipboard history while holding paste.",
+        "Quickbar slots can store references to blueprints and frequently built items."
+      ],
+      "checks": [
+        "I know why a ghost is not immediately built.",
+        "I can undo a misplaced blueprint and preserve an important layout."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "blueprints",
+        "hotkeys"
+      ]
+    },
+    {
+      "id": "circuits",
+      "title": "Circuit networks: simple switches first",
+      "phase": "ADVANCED",
+      "why": "Use logical conditions without requiring programming experience.",
+      "steps": [
+        "A circuit network carries named signals (for example “iron plate = 200”) along red/green wires. It is not an electricity cable and it cannot power machines.",
+        "Connect a storage tank to a pump with a red or green circuit wire. Set the pump enabled condition to “heavy oil > 10,000” to crack surplus oil.",
+        "A constant combinator outputs chosen signals. An arithmetic combinator calculates quantities. A decider combinator compares quantities and outputs a result. A selector combinator chooses among signals.",
+        "In version 2.1, circuit-connected machines can choose which wire colors are INPUT and which are OUTPUT. This prevents certain unwanted feedback loops and is especially useful on combinators and request-controlled machines.",
+        "Practical first projects: limit inserters based on chest count; turn an alarm light on when ammo is low; set dynamic station train limits from cargo or free capacity.",
+        "Debug by hovering a wire connection to read signal values. Trace where the value comes from, which wires are selected, the condition, and what receives the result."
+      ],
+      "diagram": "circuit",
+      "tips": [
+        "Keep your first circuits simple: one reader, one condition, one actor.",
+        "Decider combinators in 2.1 support else outputs; circuit signals can also control labs, heat devices, mines and pipes."
+      ],
+      "checks": [
+        "I can wire a pump to a tank.",
+        "I can distinguish a red/green signal wire from an electric pole connection."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "circuit",
+        "version"
+      ]
+    },
+    {
+      "id": "late",
+      "title": "Production, utility science and rocket ingredients",
+      "phase": "LATE",
+      "why": "Prepare the final research and the heavy industrial requirements.",
+      "steps": [
+        "Production (purple) science uses advanced manufacturing, including electric furnaces, rails and productivity modules. Automate these instead of handcrafting stacks.",
+        "Utility (yellow) science uses advanced resources such as processing units, low-density structures and flying robot frames. Make them permanent production lines.",
+        "Processing units demand advanced circuits, electronic circuits and sulfuric acid. Low-density structures require copper, steel and plastic. Flying robot frames require electric engines, batteries, steel and circuits.",
+        "Research the rocket silo technology after you have automated the required red, green, blue, purple and yellow science. Military science is optional for the launch goal.",
+        "Scale only the lines that genuinely bottleneck. Check P for long-term consumption, use reserve chests where useful, and upgrade to steel/electric furnaces or faster belts where needed."
+      ],
+      "diagram": "rocket",
+      "tips": [
+        "Start small: a steady trickle of purple and yellow science is enough to make progress.",
+        "Avoid starving all other factories by letting rocket-component assemblers consume unlimited materials."
+      ],
+      "checks": [
+        "My late-game science packs are made without handcrafting."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "science",
+        "rocket"
+      ]
+    },
+    {
+      "id": "nuclear",
+      "title": "Optional deep system: nuclear and solar",
+      "phase": "ADVANCED",
+      "why": "Decide how to make reliable large-scale electricity.",
+      "steps": [
+        "Solar panels produce daytime power; accumulators store excess electricity for night. The standard Nauvis planning rule is about 21 accumulators per 25 solar panels.",
+        "For nuclear, mine uranium ore (requires sulfuric acid), centrifuge uranium, create uranium fuel cells and feed a reactor. Pipe reactor heat through heat pipes to heat exchangers.",
+        "Supply exchangers with water and transport their high-temperature steam to steam turbines; cool/use spent fuel cell handling if desired.",
+        "A lone reactor produces 40 MW of heat; adjacent reactors share a neighbor bonus, making layouts more efficient but harder to design.",
+        "Nuclear fuel cells burn for a fixed cycle; a simple insertion-control circuit can reduce waste. Kovarex enrichment helps later fuel supply but is not needed for the first reactor.",
+        "Neither nuclear nor solar is required to launch the base-game rocket. Reliable coal steam power is enough if scaled appropriately."
+      ],
+      "diagram": "power",
+      "tips": [
+        "Build nuclear for learning and compact steady power, not because rocket victory strictly requires it.",
+        "A heat exchanger and steam turbine are not interchangeable with the normal coal boiler/steam-engine pair."
+      ],
+      "checks": [
+        "I know the direction of heat and water through nuclear power."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "power",
+        "nuclear"
+      ]
+    },
+    {
+      "id": "modules",
+      "title": "Modules, beacons and ratios",
+      "phase": "ADVANCED",
+      "why": "Understand production improvements without prematurely optimizing.",
+      "steps": [
+        "Speed modules increase machine speed but typically raise electricity use. Efficiency modules lower electricity demand and may reduce pollution indirectly.",
+        "Productivity modules create extra products per set amount of input but slow the machine and raise consumption; only allowed in compatible recipes/machines.",
+        "Beacons transmit module effects to nearby machines. Machine UI shows crafting speed and productivity effects; do not use pre-2.0 or Space Age-specific beacon ratios blindly.",
+        "For throughput, measure products per second = recipe output quantity × crafting speed × (1 + productivity bonus) / recipe time. Check the in-game numbers for your specific setup.",
+        "Prioritize productivity on expensive intermediates and science once you understand supply chains. Use speed elsewhere to counter bottlenecks. No modules are necessary for learning the first rocket."
+      ],
+      "diagram": "assemble",
+      "tips": [
+        "A ratio is a prediction, not a law: changing modules, machine tiers or technologies changes it."
+      ],
+      "checks": [
+        "I can explain the trade-off among speed, efficiency and productivity."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "machines",
+        "modules"
+      ]
+    },
+    {
+      "id": "rocket",
+      "title": "Win the base game: launch a satellite",
+      "phase": "FINISH",
+      "why": "Complete the actual base-game win condition for 2.1.24.",
+      "steps": [
+        "Research Rocket silo. Produce substantial concrete, electric engine units, processing units and the other silo ingredients in automated production lines.",
+        "Build the rocket silo inside your electric network and feed it the ingredients shown in its recipe interface. It builds the required rocket parts over time.",
+        "Construct a satellite (requires advanced components including solar panels, accumulators, radars, rocket fuel and advanced circuits).",
+        "Place a cargo landing pad somewhere on the planet. Insert the satellite into the rocket silo payload. In the 2.1 base game, the rocket requires a satellite to launch.",
+        "Launch the rocket and watch the victory event. The launch returns 1,000 space science packs to the cargo landing pad for infinite research.",
+        "If the rocket will not launch, confirm that the silo is powered, rocket assembly is complete, the satellite is loaded and a cargo landing pad exists.",
+        "You can continue playing after winning: improve production, add more trains, try construction robots or build an exceptionally reliable factory."
+      ],
+      "diagram": "rocket",
+      "tips": [
+        "Do not follow a Space Age guide that says your first base-game rocket leaves Nauvis with your character.",
+        "Satellite plus cargo landing pad are essential to the 2.1 base-game launch path."
+      ],
+      "checks": [
+        "I launched a satellite in a rocket.",
+        "I understand where base-game space science comes from."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "rocket",
+        "science"
+      ]
+    },
+    {
+      "id": "qol",
+      "title": "Current version 2.1.24: important conveniences",
+      "phase": "REFERENCE",
+      "why": "Use current game features without confusing base game with expansion features.",
+      "steps": [
+        "2.1.24: selecting a fluid entity again visualizes its pipeline; the relevant interface option is enabled by default. The pipe GUI also explains pipeline content and flow.",
+        "2.1.24: holding a wire limits selection to entities that accept that wire. Interface settings now include a separate Quickbar section.",
+        "2.1.21: pressing a hotkey for an empty quickbar slot can pipette the object under your cursor into that slot. Some combinators gained more comparison options.",
+        "2.1 broadly: flippable burner miners, pumpjacks and supported inserters; better drops onto splitters; fluid mixing warnings; better fluid-wagon pump connections.",
+        "2.1 broadly: pin Factoriopedia while working, hide unresearchable/unresearched entries, show interface tooltips, show pipe/tank flow information, and configure circuit input/output separately.",
+        "2.1 broadly: revised biter expansion, improved shotgun balance, Spidertron patrol support and easier rolling-stock upgrades.",
+        "2.1 Linux: SDL3, automatic video driver choice (prefers Wayland if fifo-v1 is available, otherwise X11), IME and on-screen keyboard support, and Wayland blueprint drag-and-drop.",
+        "Not in your base-only game: Space Age planets and space platforms, Quality module progression, elevated rail buildings, foundries, recyclers and interplanetary logistics."
+      ],
+      "diagram": "goal",
+      "tips": [
+        "Some newer tools are optional or only useful late in the game. Do not learn them until you need them."
+      ],
+      "checks": [
+        "I can find new 2.1.24 fluid visualization and Quickbar settings."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "version",
+        "controls"
+      ]
+    },
+    {
+      "id": "linux",
+      "title": "Arch Linux + Wayland practical checklist",
+      "phase": "REFERENCE",
+      "why": "Reduce friction from desktop keyboard shortcuts and keep saves safe.",
+      "steps": [
+        "Factorio 2.1 uses SDL3. On Linux the “auto” video driver prefers native Wayland when the compositor advertises fifo-v1; otherwise it prefers X11 (which may run through XWayland). Do not assume native Wayland without checking the running environment.",
+        "If Alt or Alt+mouse shortcuts are intercepted by your desktop environment, adjust the compositor window-move shortcuts or rebind Factorio controls under Settings → Controls. Do not change many hotkeys at once.",
+        "Search your user data directory, commonly ~/.factorio/ for native Linux installations. Some Steam setups store cloud-related data under ~/.steam/steam/userdata/<id>/427520/remote/, and Flatpak paths differ.",
+        "Before changing mods, settings or release branches, make a backup of your saves, blueprints and config files. In-game save files generally live in the user data directory under saves/.",
+        "Check the game main menu version string, not just the Steam beta setting, to confirm 2.1.24. At the time this manual was researched, 2.1.24 was experimental and 2.1.23 was the confirmed stable branch.",
+        "If UI scaling is uncomfortable, adjust interface size within the game; the debug scaling shortcuts are Ctrl+Numpad +/− or Ctrl+Numpad 0. Choose a display/UI scale that makes recipe icons readable.",
+        "The updated native non-Steam Linux requirement is GLIBC 2.36 or newer. Arch normally meets it if system packages are reasonably current; do not make blind system changes to fix an unrelated game problem."
+      ],
+      "diagram": "input",
+      "tips": [
+        "Keep a clearly named before-update save; save files and blueprints from 2.1 cannot be downgraded safely to 2.0."
+      ],
+      "checks": [
+        "I know where to inspect the version and back up save files."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "linux",
+        "version"
+      ]
+    },
+    {
+      "id": "debug",
+      "title": "What is wrong? A universal troubleshooting method",
+      "phase": "REFERENCE",
+      "why": "Debug any stopped factory in a predictable order.",
+      "steps": [
+        "Step 1: Look at the stopped machine and hover/open it. Read its exact status, recipe, input inventory, output inventory and power icon.",
+        "Step 2: Follow the item/fluid stream backward. Is the ingredient produced, delivered, accessible to an inserter and on the lane the inserter can reach?",
+        "Step 3: Inspect energy and fuel. Are poles connected to a generator? Does the power network have enough electricity? Is an engine/boiler out of water, steam or coal?",
+        "Step 4: Check orientation and room. Are inserter arrows backwards? Are pipe connections mismatched? Are output slots, fluid tanks, chests or belts completely full?",
+        "Step 5: For trains, check path continuity, signal travel side, signal colors/blocks, stop placement, automatic mode, fuel and train limits.",
+        "Step 6: For robots, check green/orange areas, item chests, robot availability, network power and charging. For circuits, check signal counts, wire color, condition and input/output configuration.",
+        "Step 7: After changing one thing, observe again before changing more. Record the cause and the one fix that worked."
+      ],
+      "diagram": "debug",
+      "tips": [
+        "A saturated belt is often evidence that the downstream consumer is too slow, not that the belt is defective.",
+        "Try the in-game Factoriopedia Alt+click, machine status tooltip and P production screen before searching the internet."
+      ],
+      "checks": [
+        "I can check power → ingredients → outputs → transport in a repeatable order."
+      ],
+      "misconceptions": [],
+      "sources": [
+        "troubleshoot",
+        "statistics"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "category": "Movement",
+      "key": "W",
+      "action": "Move up",
+      "detail": "Move engineer on the surface.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Movement",
+      "key": "A",
+      "action": "Move left",
+      "detail": "Move engineer on the surface.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Movement",
+      "key": "S",
+      "action": "Move down",
+      "detail": "Move engineer on the surface.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Movement",
+      "key": "D",
+      "action": "Move right",
+      "detail": "Move engineer on the surface.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "E",
+      "action": "Open inventory/character GUI",
+      "detail": "Also confirms/closes some game panels.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Left mouse",
+      "action": "Build / open GUI",
+      "detail": "Place held entity, or open selected entity interface.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Right mouse",
+      "action": "Mine / use item",
+      "detail": "Hold over entities/resources to mine; contextual item use.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Q",
+      "action": "Pipette / clear cursor",
+      "detail": "Hover placed object to select matching build item; otherwise clear cursor.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "R",
+      "action": "Rotate clockwise",
+      "detail": "Rotate held entity or currently selected entity.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Shift+R",
+      "action": "Rotate anticlockwise",
+      "detail": "Reverse rotate.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "H",
+      "action": "Flip horizontally",
+      "detail": "Works only for flippable objects/blueprints.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "V",
+      "action": "Flip vertically",
+      "detail": "Works only for flippable objects/blueprints.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Alt",
+      "action": "Toggle Alt-mode",
+      "detail": "Show recipes, item icons, inserter arrows.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "F",
+      "action": "Pick up nearby items",
+      "detail": "Pick loose items up off belts or the ground.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Z",
+      "action": "Drop one item",
+      "detail": "Drop one held item into world, belt or machine.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Shift+Left mouse",
+      "action": "Build ghost",
+      "detail": "Requires holding a buildable item; contextual other action in GUI.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Ctrl+Shift+Left mouse",
+      "action": "Super-force build",
+      "detail": "Prepare terrain and mark obstructions for robot deconstruction.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Space",
+      "action": "Shoot enemy",
+      "detail": "Shoot near cursor with equipped weapon.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Shift+Space",
+      "action": "Shoot selected target",
+      "detail": "Shoot precise selection/contextual targeted shot.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "C",
+      "action": "Cycle weapons",
+      "detail": "Next equipped weapon.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Enter",
+      "action": "Enter/exit vehicle",
+      "detail": "Stand near a car/tank/train.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Mouse wheel",
+      "action": "Zoom world in/out",
+      "detail": "Scroll to zoom; mouse position handling configurable.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Shift+Alt+Mouse wheel",
+      "action": "Zoom minimap",
+      "detail": "Pointer must be over minimap.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Shift+Right mouse",
+      "action": "Copy machine settings",
+      "detail": "Copy source recipe/filter/schedule/circuit configuration.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Shift+Left mouse",
+      "action": "Paste machine settings",
+      "detail": "Apply copied settings to compatible target.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Grave / backtick",
+      "action": "Toggle chat/console",
+      "detail": "Avoid commands that disable achievements.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Alt+Left mouse",
+      "action": "Open Factoriopedia",
+      "detail": "Hover an object then use this shortcut.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Alt+Right mouse",
+      "action": "Pin entity or location",
+      "detail": "Contextual entity/location pin.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "World",
+      "key": "Ctrl+Alt+Left mouse",
+      "action": "Ping map location",
+      "detail": "Share a location in chat.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Left click recipe",
+      "action": "Craft 1",
+      "detail": "In character crafting screen.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Right click recipe",
+      "action": "Craft 5",
+      "detail": "In crafting screen.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Shift+Left click recipe",
+      "action": "Craft maximum",
+      "detail": "In crafting screen.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Left click crafting queue",
+      "action": "Cancel 1",
+      "detail": "In crafting queue.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Right click crafting queue",
+      "action": "Cancel 5",
+      "detail": "In crafting queue.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Shift+Left click crafting queue",
+      "action": "Cancel all",
+      "detail": "In crafting queue.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Left mouse on inventory",
+      "action": "Pick up/drop full stack",
+      "detail": "Within inventory.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Right mouse on inventory",
+      "action": "Half-stack / place one",
+      "detail": "Right-click takes half or places one held item.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Shift+Left mouse",
+      "action": "Move one stack",
+      "detail": "Transfer between inventories.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Ctrl+Left mouse",
+      "action": "Move all matching stacks",
+      "detail": "Inventory bulk transfer; in world fast transfer into/out of machines.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Shift+Right mouse",
+      "action": "Transfer half stack",
+      "detail": "Inventory context.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Ctrl+Right mouse",
+      "action": "Transfer half of item type",
+      "detail": "Inventory context; world transfers half via entity.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Middle mouse",
+      "action": "Filter slot",
+      "detail": "Filters inventory/quickbar or clears quickbar slot.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Shift+Right mouse on slot",
+      "action": "Copy inventory filter",
+      "detail": "Use with Shift+Left mouse paste filter.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Inventory / craft",
+      "key": "Shift+Left mouse on slot",
+      "action": "Paste inventory filter",
+      "detail": "Compatible inventory slots.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Quickbar",
+      "key": "1–0",
+      "action": "Select quickbar slot",
+      "detail": "Slots 1–10 on active quickbar.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Quickbar",
+      "key": "Shift+1–0",
+      "action": "Activate quickbar N",
+      "detail": "Select quickbar numbered 1 through 10.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Quickbar",
+      "key": "X",
+      "action": "Rotate active quickbars",
+      "detail": "Switch which shortcut bars display.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Quickbar",
+      "key": "Empty quickbar slot key",
+      "action": "Quick pipette (2.1.21)",
+      "detail": "If enabled, key for empty slot can pipette hovered object into that slot.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Ctrl+C",
+      "action": "Copy area",
+      "detail": "Drag rectangle for temporary blueprint.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Ctrl+X",
+      "action": "Cut area",
+      "detail": "Copy and mark entities for removal.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Ctrl+V",
+      "action": "Paste clipboard",
+      "detail": "Ghost-paste copied entities.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Ctrl+Z",
+      "action": "Undo",
+      "detail": "Undo certain placements/deconstruction.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Ctrl+Y / Ctrl+Shift+Z",
+      "action": "Redo",
+      "detail": "Redo an undo.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Shift+Mouse wheel",
+      "action": "Cycle clipboard history",
+      "detail": "While paste tool is held.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+B",
+      "action": "Make blueprint",
+      "detail": "Open permanent blueprint creation tool.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+D",
+      "action": "Make deconstruction planner",
+      "detail": "Mark entities for robot removal.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+U",
+      "action": "Make upgrade planner",
+      "detail": "Mark entities for robot upgrading.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+C",
+      "action": "Copper wire tool",
+      "detail": "Electric-pole wire connecting/disconnecting.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+R",
+      "action": "Red wire tool",
+      "detail": "Circuit wire connection mode.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+G",
+      "action": "Green wire tool",
+      "detail": "Circuit wire connection mode.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+A",
+      "action": "Spidertron remote",
+      "detail": "Only after researching/building Spidertron.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+T",
+      "action": "Artillery targeting remote",
+      "detail": "Late-game artillery targeting.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+E",
+      "action": "Toggle exoskeleton",
+      "detail": "Equipment dependent.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+L",
+      "action": "Toggle personal logistics",
+      "detail": "Equipment / research dependent.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+F",
+      "action": "Toggle personal roboport",
+      "detail": "Equipment dependent.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Plans / tools",
+      "key": "Alt+Y",
+      "action": "Discharge defense remote",
+      "detail": "Equipment dependent.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "T",
+      "action": "Technology / research",
+      "detail": "Open research tree.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "P",
+      "action": "Production statistics",
+      "detail": "Open production and consumption graphs.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "L",
+      "action": "Logistic networks",
+      "detail": "View robot network details.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "B",
+      "action": "Blueprint library",
+      "detail": "Saved blueprint and book UI.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "O",
+      "action": "Train overview",
+      "detail": "Train list and status.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "Tab / M",
+      "action": "Map",
+      "detail": "Open map.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "Esc",
+      "action": "Menu / cancel",
+      "detail": "Open pause menu or back out of interface.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "F1",
+      "action": "Character logistics",
+      "detail": "Character logistics panel.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "F2",
+      "action": "Character info",
+      "detail": "Character info panel.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "F3",
+      "action": "Character crafting",
+      "detail": "Character crafting panel.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "Alt+Left / Alt+Right",
+      "action": "UI navigation back/forward",
+      "detail": "Go to previous or next previously opened UI window.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "Ctrl+F",
+      "action": "Focus GUI search",
+      "detail": "Contextual search boxes.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Panels",
+      "key": "Pause",
+      "action": "Pause simulation",
+      "detail": "Dedicated Pause key.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "G",
+      "action": "Toggle rail layer",
+      "detail": "Applies when rail planner used; elevated rails depend on DLC.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Left mouse with rail",
+      "action": "Avoid obstacles",
+      "detail": "Contextual rail-building ghost/obstacle avoidance.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Left mouse on map",
+      "action": "Temporary train stop",
+      "detail": "From locomotive GUI or map, adds a temporary stop.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Shift+Left mouse on train map",
+      "action": "Schedule train stop",
+      "detail": "Add selected stop to locomotive schedule.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "J",
+      "action": "Connect trains",
+      "detail": "Couple selected rolling stock.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "K",
+      "action": "Disconnect trains",
+      "detail": "Uncouple selected rolling stock.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Numpad + / −",
+      "action": "Change tile brush size",
+      "detail": "While laying terrain tiles.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Shift+Left mouse on pole",
+      "action": "Remove pole cables",
+      "detail": "Contextual cable removal.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Arrow",
+      "action": "Adjust blueprint absolute grid",
+      "detail": "Only in blueprint placement contexts.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Shift+Arrow",
+      "action": "Shift blueprint entities",
+      "detail": "Only in blueprint placement contexts.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Alt+Mouse wheel",
+      "action": "Change quality selection",
+      "detail": "Requires Quality mod: NOT base-game feature.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Numpad + / −",
+      "action": "Change UI scale",
+      "detail": "Debug shortcut; scaling is also available in settings.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Numpad 0",
+      "action": "Automatic UI scale",
+      "detail": "Debug shortcut.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "F4",
+      "action": "Debug settings",
+      "detail": "Advanced diagnostics.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "F5",
+      "action": "Debug display",
+      "detail": "Advanced diagnostics.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "F9",
+      "action": "Reset zoom",
+      "detail": "Debug shortcut.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Shift+E",
+      "action": "Prototype viewer",
+      "detail": "Advanced/debug.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Advanced",
+      "key": "Ctrl+Shift+F",
+      "action": "Prototype explorer",
+      "detail": "Advanced/debug.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "Shift+Right mouse",
+      "action": "Queue command",
+      "detail": "When commanding a remote-controlled unit, append rather than replace an order.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "Ctrl+Left mouse",
+      "action": "Rename all",
+      "detail": "Some rename dialogs can rename all identically named stops.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "Shift+Left mouse",
+      "action": "Place chat tag",
+      "detail": "With chat open, insert a link to the hovered item/location.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "Shift",
+      "action": "Force tooltip",
+      "detail": "Immediately show a tooltip if tooltip delay is long or Never.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "Shift+Mouse wheel",
+      "action": "Scroll tooltip",
+      "detail": "When the contextual detailed tooltip supports scrolling.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "Backspace / Mouse button 4",
+      "action": "Previous mod",
+      "detail": "Only in the mod-selection dialog.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Contextual",
+      "key": "F10",
+      "action": "Next replay player",
+      "detail": "Only when watching a replay.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Middle mouse",
+      "action": "Next editor variation",
+      "detail": "Editor mode only; not normal Freeplay.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Shift+Middle mouse",
+      "action": "Previous editor variation / clone",
+      "detail": "Editor mode; the same combination is context-dependent.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+Middle mouse",
+      "action": "Delete editor item",
+      "detail": "Editor mode only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Numpad 0",
+      "action": "Pause selected editor entity",
+      "detail": "Editor mode only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Numpad .",
+      "action": "Advance one simulation tick",
+      "detail": "Editor mode only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Shift+Numpad +",
+      "action": "Increase simulation speed",
+      "detail": "Editor mode only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Shift+Numpad −",
+      "action": "Decrease simulation speed",
+      "detail": "Editor mode only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Shift+Numpad *",
+      "action": "Reset simulation speed",
+      "detail": "Editor mode only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+number",
+      "action": "Select editor surface",
+      "detail": "Editor mode, if available.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+Shift+F11",
+      "action": "Enter editor",
+      "detail": "Advanced/editor command, not needed for winning.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+F3",
+      "action": "Toggle sprite atlas display",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+Shift+F4",
+      "action": "Toggle GUI visibility",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+F5",
+      "action": "Toggle GUI debug",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+F6",
+      "action": "Toggle GUI style inspection",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+F7",
+      "action": "Toggle GUI shadows",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Ctrl+F8",
+      "action": "Toggle GUI glows",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    },
+    {
+      "category": "Editor / debug",
+      "key": "Shift+F9",
+      "action": "Set zoom to 2×",
+      "detail": "Debug only.",
+      "scope": "Base",
+      "note": ""
+    }
+  ],
+  "troubleshooting": [
+    [
+      "No power icon",
+      "Check pole blue coverage, connected wires, generator, steam/fuel and network satisfaction."
+    ],
+    [
+      "Low power",
+      "Open a pole: supply is below consumption. Add generation or reduce loads."
+    ],
+    [
+      "Steam engines idle",
+      "If electricity demand is low, engines may deliberately produce almost nothing."
+    ],
+    [
+      "Boiler does not run",
+      "Check coal fuel, water connection, steam output orientation and demand."
+    ],
+    [
+      "Miner stopped",
+      "Check resource under mining area, electricity/fuel, output belt and potential depletion."
+    ],
+    [
+      "Assembler stuck",
+      "Check chosen recipe, unlocked recipe tier, ingredients, power, output space and fluid ports."
+    ],
+    [
+      "Inserter frozen",
+      "Check power, pickup/drop positions, filters, disabled condition, input and destination full."
+    ],
+    [
+      "Items on wrong belt lane",
+      "Inspect drill/inserter drop arrow in Alt-mode and where belt turns/side-loads."
+    ],
+    [
+      "One lane starves",
+      "Side-load/merge lanes deliberately or feed each lane independently."
+    ],
+    [
+      "Oil refinery blocked",
+      "An advanced recipe stops when ANY output is full. Add tanks and cracking."
+    ],
+    [
+      "Fluid pipe overextended",
+      "Find the >320×320 segment; add a powered pump to split the network."
+    ],
+    [
+      "Fluid mixing warning",
+      "Separate conflicting fluid systems; check rotated chemical machines and wrong pipe joins."
+    ],
+    [
+      "Pump inactive",
+      "Check electric power, direction, input fluid, output capacity and circuit condition."
+    ],
+    [
+      "Train “No path”",
+      "Check connected rails, direction of signals on train’s right, stop orientation and bridges if enabled."
+    ],
+    [
+      "Train “Destination full”",
+      "Train limit is zero/used up, all same-name stations unavailable or disabled."
+    ],
+    [
+      "Deadlocked intersection",
+      "Check crossing blocks, normal signals inside junctions, chain signals before and sufficient waiting lengths."
+    ],
+    [
+      "Train misses loading",
+      "Check stop side, wagon/inserter alignment, wagon filters, cargo capacity and power."
+    ],
+    [
+      "Cargo wagon fluid loading fails",
+      "Use FLUID wagon plus powered pumps with actual valid connectors, not inserters."
+    ],
+    [
+      "Bot ghost not built",
+      "Check ghost in green zone, providers holding exact item, construction bots available and power."
+    ],
+    [
+      "Logistics bot ignores requester",
+      "Check orange shared network, logistic bots, available source and unlock of requester chest."
+    ],
+    [
+      "Bots charge slowly",
+      "Spread charging load across more powered roboports."
+    ],
+    [
+      "Circuit does opposite action",
+      "Verify comparator, selected red/green input, condition, output and negative counts."
+    ],
+    [
+      "Research stuck",
+      "Check tech chosen, ALL science pack colors available, lab power and lab input."
+    ],
+    [
+      "Rocket unable to launch",
+      "For base 2.1: finish rocket parts, provide satellite and build cargo landing pad."
+    ],
+    [
+      "Enemies suddenly attack",
+      "View pollution overlay, strengthen ammo/turrets, clear threatening nests or reduce pollution."
+    ],
+    [
+      "A key does nothing on Wayland",
+      "Check compositor shortcuts/keyboard layout; test binding in Factorio Settings → Controls."
+    ],
+    [
+      "Shortcut missing",
+      "Look at controls category; some hotkeys unbound by default or only work with an equipped tool."
+    ]
+  ],
+  "glossary": [
+    [
+      "Belt",
+      "Two-lane solid-item transport line."
+    ],
+    [
+      "Inserter",
+      "Swinging arm that moves solid items between machines, belts and chests."
+    ],
+    [
+      "Lane",
+      "One half of a belt’s item flow."
+    ],
+    [
+      "Throughput",
+      "Number of items or fluid units delivered per second."
+    ],
+    [
+      "Bottleneck",
+      "The stage that limits the total output of a production chain."
+    ],
+    [
+      "Recipe",
+      "The input items and time required to produce an output in a machine."
+    ],
+    [
+      "Handcrafting",
+      "The engineer personally crafting in the character panel; not always possible."
+    ],
+    [
+      "Fuel",
+      "Consumable energy source (often coal, solid fuel, rocket fuel or uranium cells)."
+    ],
+    [
+      "Power network",
+      "Electricity wiring between generators, poles and consumers."
+    ],
+    [
+      "Pollution",
+      "Factory emissions which spread and can trigger biter attacks."
+    ],
+    [
+      "Science pack",
+      "Consumed by powered labs to progress technology research."
+    ],
+    [
+      "Ghost",
+      "A planned, not yet physically placed object."
+    ],
+    [
+      "Blueprint",
+      "Saved arrangement of structures/settings that can be placed as ghosts."
+    ],
+    [
+      "Block",
+      "Section of connected railway controlled by signals."
+    ],
+    [
+      "Rail signal",
+      "Allows train entry if the protected block is available."
+    ],
+    [
+      "Chain signal",
+      "Allows entry only if the train can follow its planned path onward."
+    ],
+    [
+      "Station train limit",
+      "Number of trains allowed to reserve the station as their destination."
+    ],
+    [
+      "Fluid segment",
+      "Connected pipes/tanks sharing fluid and fluid-level behavior."
+    ],
+    [
+      "Cracking",
+      "Conversion of a heavier oil product into a lighter one."
+    ],
+    [
+      "Orange zone",
+      "Roboport logistic-service coverage."
+    ],
+    [
+      "Green zone",
+      "Roboport construction coverage."
+    ],
+    [
+      "Circuit signal",
+      "Named quantity carried on red/green circuit wires."
+    ],
+    [
+      "Combinator",
+      "Circuit-network building for constant, arithmetic, decision or selection logic."
+    ],
+    [
+      "Mall",
+      "Factory section that supplies the player with construction materials."
+    ],
+    [
+      "Alt-mode",
+      "Visibility overlay for recipes, arrow directions and item contents."
+    ],
+    [
+      "Factoriopedia",
+      "Built-in searchable reference of entities/recipes/technologies."
+    ],
+    [
+      "FPS / UPS",
+      "Frames per second and game simulation updates per second."
+    ],
+    [
+      "Nauvis",
+      "Starting planet in Factorio; the entire base-game campaign stays there."
+    ],
+    [
+      "Space science",
+      "Base game: 1,000 packs produced by launching a rocket with satellite."
+    ],
+    [
+      "Cargo landing pad",
+      "Base game rocket science is delivered here; one must exist for launch."
+    ],
+    [
+      "Quickbar",
+      "Reference slots for selecting items/tools; not extra inventory."
+    ]
+  ],
+  "qol": [
+    [
+      "2.1.24",
+      "Base",
+      "Selected fluid entities show pipeline visualization again; enabled by default."
+    ],
+    [
+      "2.1.24",
+      "Base",
+      "Only wire-compatible entities selectable while holding wire."
+    ],
+    [
+      "2.1.24",
+      "Base",
+      "Quickbar settings get their own interface section."
+    ],
+    [
+      "2.1.21",
+      "Base",
+      "Empty quickbar hotkey can pipette hovered item into that slot."
+    ],
+    [
+      "2.1.21",
+      "Base",
+      "Selector combinator index selection; read empty slots for containers; silo launched signal."
+    ],
+    [
+      "2.1.13",
+      "Base",
+      "Zoom-to-cursor setting where supported; new alert for detected enemy expansion."
+    ],
+    [
+      "2.1.9",
+      "Base",
+      "Decider combinator else output."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Flippable burner drills, pumpjacks, compatible inserters."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Circuit input/output red/green wire selection separately."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Pipes, boilers, labs, land mines, heat pipes gain circuit options."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Fluid mixing warnings and expanded pipe GUI/overlay."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Fluid pumps connect to curved, non-aligned and end-of-wagon positions."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Factoriopedia pinning and hiding unresearched content."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Spidertron patrol and easier rolling-stock upgrades."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "Shotgun behavior/damage rebalance and changed enemy expansion."
+    ],
+    [
+      "2.1.7",
+      "Base",
+      "New assembler, refinery and rocket silo appearance."
+    ],
+    [
+      "2.1.7",
+      "Linux",
+      "SDL3, Wayland auto fallback behavior, IME, virtual keyboard and blueprint drag/drop."
+    ],
+    [
+      "2.1",
+      "Space Age only",
+      "Mixed rockets and platform logistics; ignore in base game."
+    ],
+    [
+      "2.1",
+      "Space Age only",
+      "Quality locomotives/wagons, landing-pad unloading bay and orbital transfers."
+    ],
+    [
+      "2.1",
+      "Space Age only",
+      "New planetary visuals/asteroid balancing; do not learn for base victory."
+    ]
+  ],
+  "sources": {
+    "version": [
+      "Official complete 2.1 version history incl. 2.1.24",
+      "https://wiki.factorio.com/Version_history/2.1.0"
+    ],
+    "controls": [
+      "Official current keyboard/mouse controls",
+      "https://wiki.factorio.com/Controls"
+    ],
+    "hotkeys": [
+      "Keyboard shortcuts tutorial",
+      "https://wiki.factorio.com/Tutorial:Keyboard_shortcuts"
+    ],
+    "quick": [
+      "Beginner quick start (some ratios are outdated)",
+      "https://wiki.factorio.com/Tutorial:Quick_start_guide"
+    ],
+    "machines": [
+      "Assembling machine",
+      "https://wiki.factorio.com/Assembling_machine"
+    ],
+    "belts": [
+      "Belt transport system",
+      "https://wiki.factorio.com/Belt_transport_system"
+    ],
+    "power": [
+      "Power production (current ratios)",
+      "https://wiki.factorio.com/Power_production"
+    ],
+    "fluid": [
+      "Fluid system (modern mechanics)",
+      "https://wiki.factorio.com/Fluid_system"
+    ],
+    "science": [
+      "Science packs and research",
+      "https://wiki.factorio.com/Science_pack"
+    ],
+    "research": [
+      "Research",
+      "https://wiki.factorio.com/Research"
+    ],
+    "combat": [
+      "Enemies and pollution",
+      "https://wiki.factorio.com/Enemies"
+    ],
+    "statistics": [
+      "Production statistics",
+      "https://wiki.factorio.com/Production_statistics"
+    ],
+    "rail": [
+      "Train signals tutorial",
+      "https://wiki.factorio.com/Tutorial:Train_signals"
+    ],
+    "trains": [
+      "Train stops, train limits and priority",
+      "https://wiki.factorio.com/Train_stop"
+    ],
+    "oil": [
+      "Oil processing and cracking",
+      "https://wiki.factorio.com/Oil_processing"
+    ],
+    "bots": [
+      "Roboport coverage",
+      "https://wiki.factorio.com/Roboport"
+    ],
+    "logistics": [
+      "Logistic network and chests",
+      "https://wiki.factorio.com/Logistic_network"
+    ],
+    "blueprints": [
+      "Blueprint",
+      "https://wiki.factorio.com/Blueprint"
+    ],
+    "circuit": [
+      "Circuit networks",
+      "https://wiki.factorio.com/Circuit_network"
+    ],
+    "modules": [
+      "Modules",
+      "https://wiki.factorio.com/Module"
+    ],
+    "nuclear": [
+      "Nuclear tutorial",
+      "https://wiki.factorio.com/Tutorial:Nuclear_power"
+    ],
+    "rocket": [
+      "Rocket silo in base game",
+      "https://wiki.factorio.com/Rocket_silo"
+    ],
+    "linux": [
+      "Linux file locations",
+      "https://wiki.factorio.com/Application_directory"
+    ],
+    "goal": [
+      "Official 2.1 stable overview",
+      "https://factorio.com/blog/post/fff-449"
+    ],
+    "troubleshoot": [
+      "Alerts and icons",
+      "https://wiki.factorio.com/Alerts"
+    ]
+  }
+}
